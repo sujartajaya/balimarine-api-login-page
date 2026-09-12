@@ -1,0 +1,67 @@
+services:
+  mariadb:
+    image: mariadb
+    container_name: mariadb_container
+    working_dir: /home
+    volumes:
+      - ./mariadb/dbconfig:/home
+      - ./mariadb/data:/var/lib/mysql
+    environment:
+      TZ: "Asia/Makassar"
+      MYSQL_ROOT_PASSWORD: password
+    restart: unless-stopped
+    networks:
+      - localnet
+
+  fastapi:
+    build:
+      args:
+        user: putu
+        uid: 1000
+      context: ./api
+    image: my_fastapi
+    container_name: my_fastapi_container
+    restart: unless-stopped
+    working_dir: /api
+    environment:
+      TZ: Asia/Makassar
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    volumes:
+      - ./api:/api/api
+      - .:/api
+    networks:
+      - localnet
+    command: bash -c "bash api/scripts/startup.sh"
+
+  # nginx_api:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "8888:80"
+  #     - "8443:443"
+  #   volumes:
+  #     - ./nginx_api/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./nginx/certbot/etc:/etc/letsencrypt
+  #   depends_on:
+  #     - fastapi
+  #   networks:
+  #     - localnet
+
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   container_name: certbot
+  #   volumes:
+  #     - ./nginx/certbot/etc:/etc/letsencrypt
+  #     # - ./nginx-proxy/certbot/www:/var/www/certbot
+  #     - ./nginx/certbot/log:/var/log/letsencrypt
+  #     # - ./nginx-proxy/certbot/dns:/etc
+  #   networks:
+  #     - localnet
+
+networks:
+  localnet:
+    driver: bridge

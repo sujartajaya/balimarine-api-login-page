@@ -1,0 +1,7 @@
+Sebelum menjalankan applikasi:
+1. Buat database balimarine
+2. Lakukan migrasi database
+
+Langkah melakukan migrasi database:
+1. docker compose exec fastapi alembic revision --autogenerate -m "Membuat table"
+2. docker compose exec fastapi alembic upgrade head
