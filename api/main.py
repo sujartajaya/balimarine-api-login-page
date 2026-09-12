@@ -9,8 +9,9 @@ app = FastAPI(title="Bali Marine Service API",
 API ini menyediakan layanan backend untuk autentikasi dan manajemen sistem pengguna.
 
 ### Panduan Penggunaan:
-* **Autentikasi**: Gunakan endpoint `/auth/login` untuk mendapatkan `access_token`.
+* **Autentikasi**: Gunakan endpoint `/api/auth/login` untuk mendapatkan `access_token`.
 * **Authorization**: Masukkan token pada tombol **Authorize** di pojok kanan atas dengan format `Bearer <token>`.
+* **Register Guest**: Gunakan endpoint **POST** `/api/guest` untuk register guest pada halaman login page.
 * **Format Response**: Semua response menggunakan format JSON standar.
     """,
     version="1.0.0",)
