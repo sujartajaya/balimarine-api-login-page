@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, BigInteger, String, TIMESTAMP, ForeignKey, text
+from sqlalchemy import Column, Integer, BigInteger, String, TIMESTAMP, ForeignKey, text, Text, Numeric, Date
 from sqlalchemy.orm import relationship
 from api.database.base import Base
 from sqlalchemy.sql import func
@@ -58,3 +58,34 @@ class ClientDevice(Base):
 
     # Relationship ke Guest
     guest = relationship("Guest", back_populates="devices")
+
+
+# Tambahkan class ini di bagian bawah file api/models/models.py
+
+class RadCheck(Base):
+    __tablename__ = "radcheck"
+    __table_args__ = {'extend_existing': True}  # Memungkinkan penyesuaian objek tabel tanpa bentrok
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(64), nullable=False, default='', index=True)
+    attribute = Column(String(64), nullable=False, default='')
+    op = Column(String(2), nullable=False, default='==')
+    value = Column(String(253), nullable=False, default='')
+
+
+
+class ServiceRenewalModel(Base):
+    __tablename__ = "service_renewals"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    service_code = Column(String(255), unique=True, nullable=False)
+    service_name = Column(String(255), nullable=False)
+    service_description = Column(Text, nullable=False)
+    service_price = Column(Numeric(10, 2), nullable=False)
+    service_start_date = Column(Date, nullable=False)
+    service_end_date = Column(Date, nullable=False)
+    service_status = Column(String(255), nullable=False)
+    # SEKARANG OTOMATIS DILEVEL PYTHON/SQLALCHEMY
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text("CURRENT_TIMESTAMP"))
+    updated_at = Column(TIMESTAMP(timezone=True), server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+

@@ -54,6 +54,23 @@ def run_migrations_offline():
     with context.begin_transaction():
         context.run_migrations()
 
+# Daftar tabel eksternal / FreeRADIUS yang TIDAK Boleh dikelola oleh Alembic
+IGNORED_TABLES = [
+    "radcheck",
+    "radreply",
+    "radacct",
+    "radgroupcheck",
+    "radgroupreply",
+    "usergroup",
+    "radpostauth"
+]
+
+def include_object(object, name, type_, reflected, compare_to):
+    # Abaikan jika tipe objek adalah tabel dan namannya ada di daftar IGNORED_TABLES
+    if type_ == "table" and name in IGNORED_TABLES:
+        return False
+    return True
+
 
 def run_migrations_online():
     """Run migrations in 'online' mode.
@@ -70,8 +87,10 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata,
+            connection=connection,
+            target_metadata=target_metadata,
             compare_type=True,
+            include_object=include_object  # <== DAFTARKAN FUNGSI DI SINI
         )
 
         with context.begin_transaction():

@@ -62,6 +62,25 @@ services:
   #   networks:
   #     - localnet
 
+  freeradius:
+    build:
+      context: ./freeradius
+      dockerfile: Dockerfile
+    image: freerad-images
+    container_name: freeradius-container
+    depends_on:
+      - mariadb
+    ports:
+      - 1812:1812/udp
+      - 1813:1813/udp
+    #volumes:
+    #  - ./freeradius/logs:/var/log/freeradius
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Makassar
+    networks:
+      - localnet
+
 networks:
   localnet:
     driver: bridge

@@ -7,6 +7,7 @@ mariadb/data/
 # Berkas lingkungan / rahasia
 .env
 .env.local
+.venv/
 
 # Berkas log & cache
 *.log
