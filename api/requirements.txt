@@ -34,3 +34,6 @@ sqlacodegen
 librouteros
 httpx[http2]
 pycurl
+dnspython
+email-validator
+redis

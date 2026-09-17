@@ -13,6 +13,13 @@ services:
     networks:
       - localnet
 
+  redis:
+      image: redis:alpine
+      container_name: my_redis_container
+      restart: unless-stopped
+      networks:
+        - localnet
+
   fastapi:
     build:
       args:
@@ -73,8 +80,8 @@ services:
     ports:
       - 1812:1812/udp
       - 1813:1813/udp
-    #volumes:
-    #  - ./freeradius/logs:/var/log/freeradius
+    volumes:
+      - ./freeradius/logs:/var/log/freeradius
     restart: unless-stopped
     environment:
       - TZ=Asia/Makassar

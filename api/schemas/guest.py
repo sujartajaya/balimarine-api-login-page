@@ -19,6 +19,7 @@ class GuestBase(BaseModel):
 # ============================================================
 class GuestCreate(GuestBase):
     password: str
+    mac_add: Optional[str] = None
 
 
 # ============================================================
@@ -37,6 +38,7 @@ class GuestUpdate(BaseModel):
 # ============================================================
 class GuestResponse(GuestBase):
     id: int
+    password: str
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
